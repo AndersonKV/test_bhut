@@ -11,7 +11,7 @@ import {
   NativeStackNavigationProp,
   NativeStackScreenProps,
 } from '@react-navigation/native-stack';
-import {Indicator} from '../../components/indicator';
+import {Indicator} from '../../components/Indicator';
 
 type ScreenProps = NativeStackScreenProps<RootStack>;
 
@@ -19,7 +19,7 @@ type RootStack = {
   List: undefined;
 };
 
-export default function Home({navigation}: ScreenProps) {
+export default function ScreenHome({navigation}: ScreenProps) {
   return (
     <View
       style={{

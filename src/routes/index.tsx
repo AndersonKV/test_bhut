@@ -2,12 +2,13 @@ import * as React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import Home from '../screen/home';
-import List from '../screen/list';
+import Home from '../screen/Home';
+import List from '../screen/List';
+import {ScreenCar} from '../screen/Car';
 
 const Stack = createNativeStackNavigator();
 
-export default function Routes() {
+export default function Routes(props: any) {
   return (
     <NavigationContainer>
       <Stack.Navigator>
@@ -25,6 +26,14 @@ export default function Routes() {
           }}
           name="List"
           component={List}
+        />
+
+        <Stack.Screen
+          options={{
+            title: 'Carro',
+          }}
+          name="Car"
+          component={ScreenCar}
         />
       </Stack.Navigator>
     </NavigationContainer>
