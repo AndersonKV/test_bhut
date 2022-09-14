@@ -7,46 +7,25 @@ import {
   Pressable,
 } from 'react-native';
 
-interface Props {
-  handle: () => void;
-  title: string;
-  color: string;
-  background: string;
-}
+import {
+  NativeStackNavigationProp,
+  NativeStackScreenProps,
+} from '@react-navigation/native-stack';
+import {Indicator} from '../../components/indicator';
 
-const Indicator = ({title, color, background, handle}: Props) => {
-  return (
-    <TouchableOpacity onPress={() => handle()}>
-      <View style={[styles.button, {backgroundColor: background}]}>
-        <Text style={[styles.text, {color: color}]}>{title}</Text>
-      </View>
-    </TouchableOpacity>
-  );
+type ScreenProps = NativeStackScreenProps<RootStack>;
+
+type RootStack = {
+  List: undefined;
 };
 
-export default function Home() {
-  function handle() {
-    console.log('click');
-  }
-
+export default function Home({navigation}: ScreenProps) {
   return (
     <View
       style={{
         flex: 1,
         backgroundColor: 'whitesmoke',
       }}>
-      <View style={{padding: 20, borderWidth: 1}}>
-        <Text
-          style={{
-            fontSize: 20,
-            fontWeight: 'bold',
-            color: 'black',
-            textAlign: 'center',
-          }}>
-          API REST TEST
-        </Text>
-      </View>
-
       <View
         style={{
           flex: 1,
@@ -56,35 +35,35 @@ export default function Home() {
           title="Adicionar carro"
           background="#337ab7"
           color="#fff"
-          handle={handle}
+          navigate={() => navigation.navigate('List')}
         />
 
         <Indicator
           title="Listar todos os carros"
           background="#449d44"
           color="white"
-          handle={handle}
+          navigate={() => navigation.navigate('List')}
         />
 
         <Indicator
           title="Encontrar carro por id"
           background="#e6e6e6"
           color="#000"
-          handle={handle}
+          navigate={() => navigation.navigate('List')}
         />
 
         <Indicator
           title="Atualizar carro"
           background="#ec971f"
           color="white"
-          handle={handle}
+          navigate={() => navigation.navigate('List')}
         />
 
         <Indicator
           title="Deletar carro"
           background="#d9534f"
           color="white"
-          handle={handle}
+          navigate={() => navigation.navigate('List')}
         />
       </View>
     </View>
