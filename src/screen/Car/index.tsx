@@ -1,3 +1,5 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable react/react-in-jsx-scope */
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, ToastAndroid} from 'react-native';
@@ -6,22 +8,26 @@ import {api} from '../../api/api';
 import {Indicator} from '../../components/Indicator';
 import Routes from '../../routes';
 import {ICar} from '../../types/Car';
+import {Formik} from 'formik';
+import {Input} from '../../components/Input';
 
 type RootStack = NativeStackScreenProps<RootStackParams>;
 
 type RootStackParams = {};
+
 export function ScreenCar({route, navigation}: RootStack) {
   const [car, setCar] = useState<ICar>();
-  const [changeUpdate, setChangeUpdate] = useState(false);
+  const [activeEditButton, setActiveEditButton] = useState(false);
 
   useEffect(() => {
-    const params = route.params as any;
+    const params = route?.params as any;
     const values = params.item as ICar;
 
-    if (values._id) {
+    if (values?._id) {
       setCar(values);
       navigation.setOptions({title: values.title});
     } else {
+      navigation.navigate('PageNotFound');
       console.log('err');
     }
   }, []);
@@ -30,7 +36,6 @@ export function ScreenCar({route, navigation}: RootStack) {
     try {
       const res = await api.delete('api/cars/' + car?._id);
 
-      console.log({id: res.data._id});
       if (res.data._id) {
         ToastAndroid.show('Carro deletado', ToastAndroid.TOP);
       } else {
@@ -40,69 +45,114 @@ export function ScreenCar({route, navigation}: RootStack) {
       console.log(err);
     }
   }
+
+  async function handleUpdate() {
+    try {
+      const formData = car;
+
+      const res = await api.put('api/cars/' + car?._id, formData);
+
+      if (res.data._id) {
+        ToastAndroid.show('Dados atualizado', ToastAndroid.TOP);
+      } else {
+        ToastAndroid.show('Não foi possivel atualizar', ToastAndroid.TOP);
+      }
+    } catch (err) {
+      ToastAndroid.show('Error, não foi possivel atualizar', ToastAndroid.TOP);
+    }
+  }
+
+  const DefaultView = () => {
+    return (
+      <View>
+        <Text style={styles.text}>Nome: {car?.title}</Text>
+        <Text style={styles.text}>Ano: {car?.age}</Text>
+        <Text style={styles.text}>Marca: {car?.brand}</Text>
+        <Text style={styles.text}>Preço: {car?.price}</Text>
+      </View>
+    );
+  };
+
+  function onlyNumbers(str: any) {
+    return /^[0-9]+$/.test(str);
+  }
+
+  function handleChange(value: string | number, action: string) {
+    const isActionEqualPriceOrBrand =
+      action === 'price' || action === 'age' ? true : false;
+
+    if (onlyNumbers(value) && isActionEqualPriceOrBrand) {
+      setCar({...car, [action]: value} as ICar);
+    }
+
+    if (!isActionEqualPriceOrBrand) {
+      setCar({...car, [action]: value} as ICar);
+    }
+  }
+
   return (
-    <View style={{flex: 1, backgroundColor: 'whitesmoke'}}>
-      <View
-        style={{
-          backgroundColor: 'white',
-          margin: 20,
-          padding: 10,
-          alignContent: 'center',
-          borderWidth: 1,
-        }}>
-        {!changeUpdate ? (
+    <View style={styles.container}>
+      <View style={styles.content}>
+        {activeEditButton ? (
           <>
-            <Text style={styles.text}>Nome: {car?.title}</Text>
-            <Text style={styles.text}>Ano: {car?.age}</Text>
-            <Text style={styles.text}>Marca: {car?.brand}</Text>
-            <Text style={styles.text}>Preço: {car?.price}</Text>
+            <Input
+              label={'Nome'}
+              actionName={'title'}
+              handleChange={handleChange}
+              value={String(car?.title)}
+            />
+
+            <Input
+              label={'Ano'}
+              actionName={'age'}
+              handleChange={handleChange}
+              value={Number(car?.age)}
+            />
+
+            <Input
+              label={'Marca'}
+              actionName={'brand'}
+              handleChange={handleChange}
+              value={String(car?.brand)}
+            />
+
+            <Input
+              label={'Preço'}
+              actionName={'price'}
+              handleChange={handleChange}
+              value={Number(car?.price)}
+            />
           </>
         ) : (
-          <>
-            <View style={styles.updateInput}>
-              <Text>Nome:</Text>
-              <TextInput
-                value={car?.title}
-                style={{flex: 1, backgroundColor: 'whitesmoke'}}
-              />
-            </View>
-            <View style={styles.updateInput}>
-              <Text>Ano:</Text>
-              <TextInput value={car?.age.toString()} />
-            </View>
-            <View style={styles.updateInput}>
-              <Text>Marca:</Text>
-              <TextInput value={car?.title} />
-            </View>
-            <View style={styles.updateInput}>
-              <Text>Preço:</Text>
-              <TextInput value={car?.brand} />
-            </View>
-          </>
+          <DefaultView />
         )}
       </View>
 
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          padding: 20,
-        }}>
+      <View style={styles.contentButton}>
         <View style={{width: '40%'}}>
           <Indicator
-            title="Atualizar carro"
+            title={activeEditButton ? 'Voltar' : 'Abrir editor'}
             background="#ec971f"
             color="white"
-            navigate={() => setChangeUpdate(!changeUpdate)}
+            navigate={() => setActiveEditButton(!activeEditButton)}
           />
         </View>
         <View style={{width: '40%'}}>
-          <Indicator
-            title="Deletar carro"
-            background="#d9534f"
-            color="white"
-            navigate={handleDelete}
-          />
+          {activeEditButton ? (
+            <Indicator
+              title="Atualizar"
+              background="#337ab7"
+              color="white"
+              navigate={handleUpdate}
+            />
+          ) : (
+            <Indicator
+              title="Deletar carro"
+              background="#d9534f"
+              color="white"
+              navigate={handleDelete}
+            />
+          )}
         </View>
       </View>
     </View>
@@ -111,16 +161,25 @@ export function ScreenCar({route, navigation}: RootStack) {
 
 export const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#fff',
     flex: 1,
-    paddingHorizontal: 20,
+    backgroundColor: 'whitesmoke',
   },
   text: {
     fontSize: 20,
     color: '#000',
+    borderBottomWidth: 1,
   },
-  updateInput: {
+
+  content: {
+    backgroundColor: 'white',
+    margin: 20,
+    padding: 10,
+    alignContent: 'center',
+    borderWidth: 1,
+  },
+  contentButton: {
     flexDirection: 'row',
-    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 20,
   },
 });

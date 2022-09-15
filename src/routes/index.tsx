@@ -5,6 +5,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Home from '../screen/Home';
 import List from '../screen/List';
 import {ScreenCar} from '../screen/Car';
+import {PageNotFound} from '../screen/NotFound';
 
 const Stack = createNativeStackNavigator();
 
@@ -34,6 +35,12 @@ export default function Routes(props: any) {
           }}
           name="Car"
           component={ScreenCar}
+        />
+
+        <Stack.Screen
+          options={{headerShown: false}}
+          name="PageNotFound"
+          component={PageNotFound}
         />
       </Stack.Navigator>
     </NavigationContainer>

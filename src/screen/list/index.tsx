@@ -1,5 +1,5 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 import {
   View,
   Text,
@@ -10,7 +10,7 @@ import {
   ListRenderItemInfo,
 } from 'react-native';
 import {api} from '../../api/api';
-import {RenderItem} from '../../components/RenderItem';
+import {CarItem} from '../../components/RenderItem';
 import {ICar} from '../../types/Car';
 
 type RootStack = NativeStackScreenProps<RootStackParams>;
@@ -24,13 +24,11 @@ type RootStackParams = {
 export default function ScreenList({navigation}: RootStack) {
   const [cars, setCars] = useState<ICar[]>();
 
-  console.log('teste');
   useEffect(() => {
     async function init() {
       try {
         const res = await api.get('api/cars');
 
-        console.log(res.data.length);
         setCars(res.data);
       } catch (err) {
         console.log(err);
@@ -41,35 +39,37 @@ export default function ScreenList({navigation}: RootStack) {
   }, []);
 
   const navigate = (item: ICar) => {
-    navigation.navigate('Car', {item});
+    navigation.navigate('Car', {});
   };
 
-  const keyExtractor = (item: ICar) => item._id;
-
-  // fixed height of item component
   const ITEM_HEIGHT = 40;
 
+  const renderItem = useCallback(
+    ({item, index}: ListRenderItemInfo<ICar>) => (
+      <CarItem index={index} item={item} navigate={navigate} />
+    ),
+    [],
+  );
+
+  const keyExtractor = useCallback((item: ICar) => item._id, []);
+
   return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: 'white',
-      }}>
+    <View style={styles.container}>
       <FlatList
         style={styles.flatList}
         keyExtractor={keyExtractor}
         data={cars}
-        initialNumToRender={10}
-        windowSize={10}
-        maxToRenderPerBatch={10}
-        updateCellsBatchingPeriod={30}
         removeClippedSubviews={false}
+        maxToRenderPerBatch={40}
+        windowSize={30}
+        updateCellsBatchingPeriod={50}
+        initialNumToRender={20}
         getItemLayout={(_, index) => ({
           length: ITEM_HEIGHT,
           offset: ITEM_HEIGHT * index,
           index,
         })}
-        renderItem={RenderItem}
+        renderItem={renderItem}
       />
     </View>
   );
@@ -77,30 +77,8 @@ export default function ScreenList({navigation}: RootStack) {
 
 export const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#fff',
     flex: 1,
-    paddingHorizontal: 20,
-  },
-  clearButton: {
-    width: 80,
-    borderRadius: 60,
     backgroundColor: 'white',
-    justifyContent: 'center',
-    alignContent: 'center',
-    borderColor: '#d3d3d3',
-    borderWidth: 2,
-    marginVertical: 24,
-    padding: 8,
-  },
-  clearText: {
-    textAlign: 'center',
-    fontSize: 17,
-    fontWeight: 'bold',
-  },
-  boxMessage: {
-    alignItems: 'center',
-    borderColor: '#000',
-    paddingVertical: 10,
   },
   flatList: {
     margin: 20,
@@ -109,9 +87,5 @@ export const styles = StyleSheet.create({
     borderColor: '#d3d3d3',
     shadowColor: '#000',
     zIndex: 10,
-  },
-  textSpan: {
-    fontSize: 14,
-    fontWeight: 'bold',
   },
 });

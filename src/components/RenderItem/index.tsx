@@ -1,13 +1,20 @@
-import {TouchableOpacity, Text, ListRenderItemInfo} from 'react-native';
+/* eslint-disable react/react-in-jsx-scope */
+import {} from '@react-navigation/native';
+import React from 'react';
+import {TouchableOpacity, Text, ListRenderItemInfo, View} from 'react-native';
 import {ICar} from '../../types/Car';
 
 interface Props {
+  navigate: (value: ICar) => void;
   item: ICar;
-  handle: (value: ICar) => void;
+  index: Number;
 }
-export function RenderItem({item, index}: ListRenderItemInfo<ICar>) {
+
+export function CarItem({item, index, navigate}: Props) {
   return (
-    <TouchableOpacity style={{marginVertical: 10, borderWidth: 1, padding: 5}}>
+    <TouchableOpacity
+      onPress={() => navigate(item)}
+      style={{marginVertical: 10, borderWidth: 1, padding: 5}}>
       <Text style={{fontSize: 20, color: '#000'}}>Index: {index}</Text>
       <Text style={{fontSize: 20, color: '#000'}}>Nome: {item.title}</Text>
       <Text style={{fontSize: 20, color: '#000'}}>Ano: {item.age}</Text>
