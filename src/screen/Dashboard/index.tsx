@@ -23,7 +23,7 @@ type RootStackParams = {
   PageNotFound: undefined;
 };
 
-export function ScreenCar({route, navigation}: RootStack) {
+export function ScreenDashBoard({route, navigation}: RootStack) {
   const [car, setCar] = useState<ICar>();
   const [activeEditButton, setActiveEditButton] = useState(false);
 

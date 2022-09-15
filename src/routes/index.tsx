@@ -4,7 +4,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Home from '../screen/Home';
 import List from '../screen/List';
-import {ScreenCar} from '../screen/Car';
+import {ScreenDashBoard} from '../screen/Dashboard';
 import {PageNotFound} from '../screen/NotFound';
 import {ScreenPostCar} from '../screen/PostCar';
 
@@ -42,8 +42,8 @@ export default function Routes() {
           options={{
             title: 'Carro',
           }}
-          name="Car"
-          component={ScreenCar}
+          name="Dashboard"
+          component={ScreenDashBoard}
         />
 
         <Stack.Screen
