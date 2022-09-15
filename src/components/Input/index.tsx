@@ -1,31 +1,36 @@
 import React, {ChangeEvent} from 'react';
 
-import {View, Text, TextInput, StyleSheet} from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  KeyboardTypeOptions,
+} from 'react-native';
 import {ICar} from '../../types/Car';
 
 interface Props {
   placeholder?: string;
-  value: string | number;
-  actionName: string;
+  value: string;
   label: string;
   handleChange: (e: string | ChangeEvent<any>) => void;
-
+  keyboardType: KeyboardTypeOptions;
   //handleChange: (text: string | number, actionName: string) => void;
 }
 export function Input({
+  keyboardType,
   placeholder,
   label,
   value,
   handleChange,
-  actionName,
 }: Props) {
   return (
     <View style={styles.contentInput}>
       <Text style={styles.contentInputLabel}>{label}:</Text>
       <TextInput
         placeholder={placeholder}
-        keyboardType={typeof value === 'number' ? 'numeric' : 'default'}
-        value={value.toString()}
+        keyboardType={keyboardType}
+        value={value}
         style={styles.input}
         onChangeText={handleChange}
 

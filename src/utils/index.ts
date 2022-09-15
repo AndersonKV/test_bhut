@@ -1,10 +1,12 @@
-import { CreatedPostDTO, ICar, PostError } from '../types/Car';
+import { ValidateCarDTO, PostError, ICar } from '../types/Car';
 
 export function onlyNumbers(str: any) {
   return /^[0-9]+$/.test(str);
 }
 
-export async function validate(values: CreatedPostDTO) {
+export function validate(val: any) {
+  const values = val as ValidateCarDTO;
+
   const err = {} as PostError;
 
   if (String(values.title).trim().length === 0) {

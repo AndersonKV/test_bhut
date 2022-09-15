@@ -8,15 +8,14 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
+  Button,
 } from 'react-native';
-import {TextInput} from 'react-native-gesture-handler';
 import {api} from '../../api/api';
 import {Indicator} from '../../components/Indicator';
-import Routes from '../../routes';
-import {ICar} from '../../types/Car';
 import {Formik} from 'formik';
 import {Input} from '../../components/Input';
-import {onlyNumbers} from '../../utils';
+import {validate} from '../../utils';
+import {ICar} from '../../types/Car';
 
 type RootStack = NativeStackScreenProps<RootStackParams>;
 
@@ -37,7 +36,6 @@ export function ScreenCar({route, navigation}: RootStack) {
       navigation.setOptions({title: values.title});
     } else {
       navigation.navigate('PageNotFound');
-      console.log('err');
     }
   }, []);
 
@@ -51,29 +49,13 @@ export function ScreenCar({route, navigation}: RootStack) {
         ToastAndroid.show('Não foi possivel deletar', ToastAndroid.TOP);
       }
     } catch (err) {
-      console.log(err);
-    }
-  }
-
-  async function handleUpdate() {
-    try {
-      const formData = car;
-
-      const res = await api.put('api/cars/' + car?._id, formData);
-
-      if (res.data._id) {
-        ToastAndroid.show('Dados atualizado', ToastAndroid.TOP);
-      } else {
-        ToastAndroid.show('Não foi possivel atualizar', ToastAndroid.TOP);
-      }
-    } catch (err) {
-      ToastAndroid.show('Error, não foi possivel atualizar', ToastAndroid.TOP);
+      ToastAndroid.show('Requisição invalida', ToastAndroid.TOP);
     }
   }
 
   const DefaultView = () => {
     return (
-      <View>
+      <View style={styles.content}>
         <Text style={styles.text}>Nome: {car?.title}</Text>
         <Text style={styles.text}>Ano: {car?.age}</Text>
         <Text style={styles.text}>Marca: {car?.brand}</Text>
@@ -82,57 +64,104 @@ export function ScreenCar({route, navigation}: RootStack) {
     );
   };
 
-  function handleChange(value: string | number, action: string) {
-    const isActionEqualPriceOrBrand =
-      action === 'price' || action === 'age' ? true : false;
+  const initials = {_id: '', title: '', brand: '', price: '', age: ''};
 
-    if (onlyNumbers(value) && isActionEqualPriceOrBrand) {
-      setCar({...car, [action]: value} as ICar);
-    }
+  const initialValues = {...car};
+  const initialErrors = {...initials};
 
-    if (!isActionEqualPriceOrBrand) {
-      setCar({...car, [action]: value} as ICar);
+  async function onSubmit(values: any) {
+    try {
+      const formData = values as ICar;
+
+      const res = await api.put('api/cars/' + formData._id, formData);
+
+      if (res.data._id) {
+        ToastAndroid.show('Dados atualizado', ToastAndroid.TOP);
+      } else {
+        ToastAndroid.show('Não foi possivel atualizar', ToastAndroid.TOP);
+      }
+    } catch (err) {
+      ToastAndroid.show('Requisição invalida', ToastAndroid.TOP);
     }
   }
-
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <KeyboardAvoidingView style={styles.container} enabled>
-        <View style={styles.content}>
-          {activeEditButton ? (
-            <>
-              <Input
-                label={'Nome'}
-                actionName={'title'}
-                handleChange={handleChange}
-                value={String(car?.title)}
-              />
+        {activeEditButton ? (
+          <Formik
+            initialValues={initialValues}
+            initialErrors={initialErrors}
+            validate={values => validate(values)}
+            onSubmit={values => onSubmit(values)}>
+            {({handleChange, handleSubmit, errors, touched, values}) => (
+              <View style={styles.content}>
+                <Input
+                  label={'Nome'}
+                  handleChange={handleChange('title')}
+                  value={String(values.title)}
+                  keyboardType={'default'}
+                  placeholder={'digite o nome'}
+                />
 
-              <Input
-                label={'Ano'}
-                actionName={'age'}
-                handleChange={handleChange}
-                value={Number(car?.age)}
-              />
+                {errors.title && touched.title ? (
+                  <Text style={{fontSize: 16}}>
+                    <Text style={{color: 'red', fontWeight: 'bold'}}>*</Text>
+                    {errors.title}
+                  </Text>
+                ) : null}
 
-              <Input
-                label={'Marca'}
-                actionName={'brand'}
-                handleChange={handleChange}
-                value={String(car?.brand)}
-              />
+                <Input
+                  label={'Ano'}
+                  handleChange={handleChange('age')}
+                  value={String(values.age)}
+                  keyboardType={'numeric'}
+                  placeholder={'digite o ano'}
+                />
 
-              <Input
-                label={'Preço'}
-                actionName={'price'}
-                handleChange={handleChange}
-                value={Number(car?.price)}
-              />
-            </>
-          ) : (
-            <DefaultView />
-          )}
-        </View>
+                {errors.age && touched.age ? (
+                  <Text style={{fontSize: 16}}>
+                    <Text style={{color: 'red', fontWeight: 'bold'}}>*</Text>
+                    {errors.age}
+                  </Text>
+                ) : null}
+
+                <Input
+                  label={'Marca'}
+                  handleChange={handleChange('brand')}
+                  value={String(values.brand)}
+                  keyboardType={'default'}
+                  placeholder={'digite a marca'}
+                />
+
+                {errors.brand && touched.brand ? (
+                  <Text style={{fontSize: 16}}>
+                    <Text style={{color: 'red', fontWeight: 'bold'}}>*</Text>
+                    {errors.brand}
+                  </Text>
+                ) : null}
+
+                <Input
+                  label={'Preço'}
+                  handleChange={handleChange('price')}
+                  value={String(values.price)}
+                  keyboardType={'numeric'}
+                  placeholder={'digite o preço'}
+                />
+
+                {errors.price && touched.price ? (
+                  <Text style={{fontSize: 16}}>
+                    <Text style={{color: 'red', fontWeight: 'bold'}}>*</Text>
+                    {errors.price}
+                  </Text>
+                ) : null}
+
+                <Button onPress={handleSubmit} title="Atualizar" />
+              </View>
+            )}
+          </Formik>
+        ) : (
+          <DefaultView />
+        )}
 
         <View style={styles.contentButton}>
           <View style={{width: '40%'}}>
@@ -144,21 +173,14 @@ export function ScreenCar({route, navigation}: RootStack) {
             />
           </View>
           <View style={{width: '40%'}}>
-            {activeEditButton ? (
-              <Indicator
-                title="Atualizar"
-                background="#337ab7"
-                color="white"
-                navigate={handleUpdate}
-              />
-            ) : (
+            {!activeEditButton === true ? (
               <Indicator
                 title="Deletar carro"
                 background="#d9534f"
                 color="white"
                 navigate={handleDelete}
               />
-            )}
+            ) : null}
           </View>
         </View>
       </KeyboardAvoidingView>

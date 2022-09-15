@@ -4,10 +4,10 @@ export interface ICar {
     brand: string;
     price: number;
     age: number;
-    __v: number;
 }
 
-export interface CreatedPostDTO {
+export interface ValidateCarDTO {
+    _id?: string;
     title: string;
     brand: string;
     price: string;

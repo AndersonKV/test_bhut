@@ -54,7 +54,6 @@ export function ScreenPostCar({route, navigation}: RootStack) {
               <View>
                 <Input
                   label={'Nome'}
-                  actionName={'title'}
                   handleChange={handleChange('title')}
                   value={values.title}
                   placeholder={'digite o nome'}
@@ -69,7 +68,6 @@ export function ScreenPostCar({route, navigation}: RootStack) {
 
                 <Input
                   label={'Ano'}
-                  actionName={'age'}
                   handleChange={handleChange('age')}
                   value={values.age}
                   placeholder={'digite o ano'}
@@ -84,7 +82,6 @@ export function ScreenPostCar({route, navigation}: RootStack) {
 
                 <Input
                   label={'Marca'}
-                  actionName={'brand'}
                   handleChange={handleChange('brand')}
                   value={values.brand}
                   placeholder={'digite a marca'}
@@ -99,7 +96,6 @@ export function ScreenPostCar({route, navigation}: RootStack) {
 
                 <Input
                   label={'Preço'}
-                  actionName={'price'}
                   handleChange={handleChange('price')}
                   value={values.price}
                   placeholder={'digite o preço'}

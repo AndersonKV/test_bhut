@@ -19,7 +19,7 @@ export function CarItem({item, index, navigate}: Props) {
       <Text style={{fontSize: 20, color: '#000'}}>Nome: {item.title}</Text>
       <Text style={{fontSize: 20, color: '#000'}}>Ano: {item.age}</Text>
       <Text style={{fontSize: 20, color: '#000'}}>Marca: {item.brand}</Text>
-      <Text style={{fontSize: 20, color: '#000'}}>Preço: {item.brand}</Text>
+      <Text style={{fontSize: 20, color: '#000'}}>Preço: {item.price}</Text>
     </TouchableOpacity>
   );
 }
