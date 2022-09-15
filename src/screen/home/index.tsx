@@ -7,17 +7,15 @@ import {
   Pressable,
 } from 'react-native';
 
-import {
-  NativeStackNavigationProp,
-  NativeStackScreenProps,
-} from '@react-navigation/native-stack';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {Indicator} from '../../components/Indicator';
 
 type ScreenProps = NativeStackScreenProps<RootStack>;
 
 type RootStack = {
   List: undefined;
-  PostCar: undefined;
+  Publish: undefined;
+  FindCar: undefined;
 };
 
 export default function ScreenHome({navigation}: ScreenProps) {
@@ -36,7 +34,7 @@ export default function ScreenHome({navigation}: ScreenProps) {
           title="Adicionar carro"
           background="#337ab7"
           color="#fff"
-          navigate={() => navigation.navigate('PostCar')}
+          navigate={() => navigation.navigate('Publish')}
         />
 
         <Indicator
@@ -50,7 +48,7 @@ export default function ScreenHome({navigation}: ScreenProps) {
           title="Encontrar carro por id"
           background="#e6e6e6"
           color="#000"
-          navigate={() => navigation.navigate('List')}
+          navigate={() => navigation.navigate('FindCar')}
         />
       </View>
     </View>

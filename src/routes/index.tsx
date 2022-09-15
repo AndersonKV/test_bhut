@@ -4,9 +4,10 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Home from '../screen/Home';
 import List from '../screen/List';
-import {ScreenDashBoard} from '../screen/Dashboard';
+import {ScreenDashboard} from '../screen/Dashboard';
 import {PageNotFound} from '../screen/NotFound';
-import {ScreenPostCar} from '../screen/PostCar';
+import {ScreenPublish} from '../screen/Publish';
+import {ScreenFindCar} from '../screen/FindCar';
 
 const Stack = createNativeStackNavigator();
 
@@ -34,8 +35,8 @@ export default function Routes() {
           options={{
             title: 'Publicação',
           }}
-          name="PostCar"
-          component={ScreenPostCar}
+          name="Publish"
+          component={ScreenPublish}
         />
 
         <Stack.Screen
@@ -43,7 +44,15 @@ export default function Routes() {
             title: 'Carro',
           }}
           name="Dashboard"
-          component={ScreenDashBoard}
+          component={ScreenDashboard}
+        />
+
+        <Stack.Screen
+          options={{
+            title: 'Encontre carro pelo id',
+          }}
+          name="FindCar"
+          component={ScreenFindCar}
         />
 
         <Stack.Screen

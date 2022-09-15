@@ -11,7 +11,7 @@ import {
   Button,
 } from 'react-native';
 import {api} from '../../api/api';
-import {CreatedPostDTO} from '../../types/Car';
+import {ValidateCarDTO} from '../../types/Car';
 import {Formik} from 'formik';
 import {Input} from '../../components/Input';
 import {validate} from '../../utils';
@@ -20,12 +20,12 @@ type RootStack = NativeStackScreenProps<RootStackParams>;
 
 type RootStackParams = {};
 
-export function ScreenPostCar({route, navigation}: RootStack) {
+export function ScreenPublish({route, navigation}: RootStack) {
   const initials = {title: '', brand: '', price: '', age: ''};
   const initialValues = {...initials};
   const initialErrors = {...initials};
 
-  async function onSubmit(values: CreatedPostDTO) {
+  async function onSubmit(values: ValidateCarDTO) {
     try {
       const formData = values;
 
@@ -57,6 +57,7 @@ export function ScreenPostCar({route, navigation}: RootStack) {
                   handleChange={handleChange('title')}
                   value={values.title}
                   placeholder={'digite o nome'}
+                  keyboardType={'default'}
                 />
 
                 {errors.title && touched.title ? (
@@ -71,6 +72,7 @@ export function ScreenPostCar({route, navigation}: RootStack) {
                   handleChange={handleChange('age')}
                   value={values.age}
                   placeholder={'digite o ano'}
+                  keyboardType={'numeric'}
                 />
 
                 {errors.age && touched.age ? (
@@ -85,6 +87,7 @@ export function ScreenPostCar({route, navigation}: RootStack) {
                   handleChange={handleChange('brand')}
                   value={values.brand}
                   placeholder={'digite a marca'}
+                  keyboardType={'default'}
                 />
 
                 {errors.brand && touched.brand ? (
@@ -98,6 +101,7 @@ export function ScreenPostCar({route, navigation}: RootStack) {
                   label={'Preço'}
                   handleChange={handleChange('price')}
                   value={values.price}
+                  keyboardType={'numeric'}
                   placeholder={'digite o preço'}
                 />
 

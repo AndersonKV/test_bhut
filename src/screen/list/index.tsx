@@ -1,14 +1,6 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import React, {useEffect, useState, useCallback} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Pressable,
-  FlatList,
-  ListRenderItemInfo,
-} from 'react-native';
+import {View, StyleSheet, FlatList, ListRenderItemInfo} from 'react-native';
 import {api} from '../../api/api';
 import {CarItem} from '../../components/RenderItem';
 import {ICar} from '../../types/Car';
@@ -16,7 +8,7 @@ import {ICar} from '../../types/Car';
 type RootStack = NativeStackScreenProps<RootStackParams>;
 
 type RootStackParams = {
-  Car: {
+  Dashboard: {
     item: ICar;
   };
 };
@@ -39,7 +31,7 @@ export default function ScreenList({navigation}: RootStack) {
   }, []);
 
   const navigate = (item: ICar) => {
-    navigation.navigate('Car', {item});
+    navigation.navigate('Dashboard', {item});
   };
 
   const ITEM_HEIGHT = 40;
