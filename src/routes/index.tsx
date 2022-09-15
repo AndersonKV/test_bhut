@@ -6,10 +6,11 @@ import Home from '../screen/Home';
 import List from '../screen/List';
 import {ScreenCar} from '../screen/Car';
 import {PageNotFound} from '../screen/NotFound';
+import {ScreenPostCar} from '../screen/PostCar';
 
 const Stack = createNativeStackNavigator();
 
-export default function Routes(props: any) {
+export default function Routes() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
@@ -27,6 +28,14 @@ export default function Routes(props: any) {
           }}
           name="List"
           component={List}
+        />
+
+        <Stack.Screen
+          options={{
+            title: 'Publicação',
+          }}
+          name="PostCar"
+          component={ScreenPostCar}
         />
 
         <Stack.Screen

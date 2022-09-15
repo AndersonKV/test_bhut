@@ -1,8 +1,14 @@
-/* eslint-disable prettier/prettier */
-/* eslint-disable react/react-in-jsx-scope */
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, ToastAndroid} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ToastAndroid,
+  Keyboard,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import {TextInput} from 'react-native-gesture-handler';
 import {api} from '../../api/api';
 import {Indicator} from '../../components/Indicator';
@@ -10,10 +16,13 @@ import Routes from '../../routes';
 import {ICar} from '../../types/Car';
 import {Formik} from 'formik';
 import {Input} from '../../components/Input';
+import {onlyNumbers} from '../../utils';
 
 type RootStack = NativeStackScreenProps<RootStackParams>;
 
-type RootStackParams = {};
+type RootStackParams = {
+  PageNotFound: undefined;
+};
 
 export function ScreenCar({route, navigation}: RootStack) {
   const [car, setCar] = useState<ICar>();
@@ -73,10 +82,6 @@ export function ScreenCar({route, navigation}: RootStack) {
     );
   };
 
-  function onlyNumbers(str: any) {
-    return /^[0-9]+$/.test(str);
-  }
-
   function handleChange(value: string | number, action: string) {
     const isActionEqualPriceOrBrand =
       action === 'price' || action === 'age' ? true : false;
@@ -91,78 +96,80 @@ export function ScreenCar({route, navigation}: RootStack) {
   }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.content}>
-        {activeEditButton ? (
-          <>
-            <Input
-              label={'Nome'}
-              actionName={'title'}
-              handleChange={handleChange}
-              value={String(car?.title)}
-            />
-
-            <Input
-              label={'Ano'}
-              actionName={'age'}
-              handleChange={handleChange}
-              value={Number(car?.age)}
-            />
-
-            <Input
-              label={'Marca'}
-              actionName={'brand'}
-              handleChange={handleChange}
-              value={String(car?.brand)}
-            />
-
-            <Input
-              label={'Preço'}
-              actionName={'price'}
-              handleChange={handleChange}
-              value={Number(car?.price)}
-            />
-          </>
-        ) : (
-          <DefaultView />
-        )}
-      </View>
-
-      <View style={styles.contentButton}>
-        <View style={{width: '40%'}}>
-          <Indicator
-            title={activeEditButton ? 'Voltar' : 'Abrir editor'}
-            background="#ec971f"
-            color="white"
-            navigate={() => setActiveEditButton(!activeEditButton)}
-          />
-        </View>
-        <View style={{width: '40%'}}>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <KeyboardAvoidingView style={styles.container} enabled>
+        <View style={styles.content}>
           {activeEditButton ? (
-            <Indicator
-              title="Atualizar"
-              background="#337ab7"
-              color="white"
-              navigate={handleUpdate}
-            />
+            <>
+              <Input
+                label={'Nome'}
+                actionName={'title'}
+                handleChange={handleChange}
+                value={String(car?.title)}
+              />
+
+              <Input
+                label={'Ano'}
+                actionName={'age'}
+                handleChange={handleChange}
+                value={Number(car?.age)}
+              />
+
+              <Input
+                label={'Marca'}
+                actionName={'brand'}
+                handleChange={handleChange}
+                value={String(car?.brand)}
+              />
+
+              <Input
+                label={'Preço'}
+                actionName={'price'}
+                handleChange={handleChange}
+                value={Number(car?.price)}
+              />
+            </>
           ) : (
-            <Indicator
-              title="Deletar carro"
-              background="#d9534f"
-              color="white"
-              navigate={handleDelete}
-            />
+            <DefaultView />
           )}
         </View>
-      </View>
-    </View>
+
+        <View style={styles.contentButton}>
+          <View style={{width: '40%'}}>
+            <Indicator
+              title={activeEditButton ? 'Voltar' : 'Abrir editor'}
+              background="#ec971f"
+              color="white"
+              navigate={() => setActiveEditButton(!activeEditButton)}
+            />
+          </View>
+          <View style={{width: '40%'}}>
+            {activeEditButton ? (
+              <Indicator
+                title="Atualizar"
+                background="#337ab7"
+                color="white"
+                navigate={handleUpdate}
+              />
+            ) : (
+              <Indicator
+                title="Deletar carro"
+                background="#d9534f"
+                color="white"
+                navigate={handleDelete}
+              />
+            )}
+          </View>
+        </View>
+      </KeyboardAvoidingView>
+    </TouchableWithoutFeedback>
   );
 }
 
-export const styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: 'whitesmoke',
+    flex: 1,
   },
   text: {
     fontSize: 20,

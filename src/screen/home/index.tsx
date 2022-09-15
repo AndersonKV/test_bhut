@@ -17,6 +17,7 @@ type ScreenProps = NativeStackScreenProps<RootStack>;
 
 type RootStack = {
   List: undefined;
+  PostCar: undefined;
 };
 
 export default function ScreenHome({navigation}: ScreenProps) {
@@ -35,7 +36,7 @@ export default function ScreenHome({navigation}: ScreenProps) {
           title="Adicionar carro"
           background="#337ab7"
           color="#fff"
-          navigate={() => navigation.navigate('List')}
+          navigate={() => navigation.navigate('PostCar')}
         />
 
         <Indicator
@@ -51,20 +52,6 @@ export default function ScreenHome({navigation}: ScreenProps) {
           color="#000"
           navigate={() => navigation.navigate('List')}
         />
-
-        {/* <Indicator
-          title="Atualizar carro"
-          background="#ec971f"
-          color="white"
-          navigate={() => navigation.navigate('List')}
-        />
-
-        <Indicator
-          title="Deletar carro"
-          background="#d9534f"
-          color="white"
-          navigate={() => navigation.navigate('List')}
-        /> */}
       </View>
     </View>
   );

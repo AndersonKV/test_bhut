@@ -39,7 +39,7 @@ export default function ScreenList({navigation}: RootStack) {
   }, []);
 
   const navigate = (item: ICar) => {
-    navigation.navigate('Car', {});
+    navigation.navigate('Car', {item});
   };
 
   const ITEM_HEIGHT = 40;
