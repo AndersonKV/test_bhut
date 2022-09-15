@@ -1,10 +1,10 @@
 import React from 'react';
-import {TouchableOpacity, Text, ListRenderItemInfo, View} from 'react-native';
-import {ICar} from '../../types/Car';
+import {TouchableOpacity, Text} from 'react-native';
+import {DataCar} from '../../types/Car';
 
 interface Props {
-  navigate: (value: ICar) => void;
-  item: ICar;
+  navigate: (value: DataCar) => void;
+  item: DataCar;
   index: Number;
 }
 

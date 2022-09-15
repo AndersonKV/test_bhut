@@ -1,4 +1,4 @@
-import { ValidateCarDTO, PostError, ICar } from '../types/Car';
+import { ValidateCarDTO, PostError } from '../types/Car';
 
 export function onlyNumbers(str: any) {
   return /^[0-9]+$/.test(str);

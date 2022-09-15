@@ -3,18 +3,18 @@ import React, {useEffect, useState, useCallback} from 'react';
 import {View, StyleSheet, FlatList, ListRenderItemInfo} from 'react-native';
 import {api} from '../../api/api';
 import {CarItem} from '../../components/RenderItem';
-import {ICar} from '../../types/Car';
+import {DataCar} from '../../types/Car';
 
 type RootStack = NativeStackScreenProps<RootStackParams>;
 
 type RootStackParams = {
   Dashboard: {
-    item: ICar;
+    item: DataCar;
   };
 };
 
 export default function ScreenList({navigation}: RootStack) {
-  const [cars, setCars] = useState<ICar[]>();
+  const [cars, setCars] = useState<DataCar[]>();
 
   useEffect(() => {
     async function init() {
@@ -30,20 +30,20 @@ export default function ScreenList({navigation}: RootStack) {
     init();
   }, []);
 
-  const navigate = (item: ICar) => {
+  const navigate = (item: DataCar) => {
     navigation.navigate('Dashboard', {item});
   };
 
   const ITEM_HEIGHT = 40;
 
   const renderItem = useCallback(
-    ({item, index}: ListRenderItemInfo<ICar>) => (
+    ({item, index}: ListRenderItemInfo<DataCar>) => (
       <CarItem index={index} item={item} navigate={navigate} />
     ),
     [],
   );
 
-  const keyExtractor = useCallback((item: ICar) => item._id, []);
+  const keyExtractor = useCallback((item: DataCar) => item._id, []);
 
   return (
     <View style={styles.container}>

@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Pressable,
-} from 'react-native';
+import {View} from 'react-native';
 
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {Indicator} from '../../components/Indicator';
@@ -54,13 +48,3 @@ export default function ScreenHome({navigation}: ScreenProps) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  button: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 15,
-    borderColor: 'none',
-  },
-  text: {fontWeight: 'bold', fontSize: 20},
-});

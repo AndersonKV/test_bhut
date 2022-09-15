@@ -1,4 +1,5 @@
-export interface ICar {
+/* eslint-disable prettier/prettier */
+export interface DataCar {
     _id: string;
     title: string;
     brand: string;
@@ -6,14 +7,14 @@ export interface ICar {
     age: number;
 }
 
-export interface ValidateCarDTO {
+export interface CarDTO {
     _id?: string;
     title: string;
     brand: string;
     price: string;
     age: string;
 }
-export interface PostError {
+export interface DataErrorCar {
     title: string;
     brand: string;
     price: string;

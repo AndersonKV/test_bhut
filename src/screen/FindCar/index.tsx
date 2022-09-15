@@ -1,23 +1,16 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
   StyleSheet,
   ToastAndroid,
-  Keyboard,
-  KeyboardAvoidingView,
-  TouchableWithoutFeedback,
   Button,
   TextInput,
 } from 'react-native';
 import {api} from '../../api/api';
-import {Indicator} from '../../components/Indicator';
-import {Formik} from 'formik';
-import {Input} from '../../components/Input';
-import {validate} from '../../utils';
-import {ICar} from '../../types/Car';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+
+import {DataCar} from '../../types/Car';
 
 type RootStack = NativeStackScreenProps<RootStackParams>;
 
@@ -26,7 +19,7 @@ type RootStackParams = {
 };
 
 export function ScreenFindCar({route, navigation}: RootStack) {
-  const [car, setCar] = useState<ICar | null>();
+  const [car, setCar] = useState<DataCar | null>();
   const [copyId, setCopiId] = useState<string>();
 
   async function handleSubmit() {
@@ -40,6 +33,8 @@ export function ScreenFindCar({route, navigation}: RootStack) {
       if (res.data._id) {
         setCar(res.data);
         ToastAndroid.show('Sucesso', ToastAndroid.TOP);
+      } else {
+        ToastAndroid.show('id não encontrado', ToastAndroid.TOP);
       }
     } catch (err) {
       console.log(err);

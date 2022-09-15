@@ -7,7 +7,6 @@ import {
   StyleSheet,
   KeyboardTypeOptions,
 } from 'react-native';
-import {ICar} from '../../types/Car';
 
 interface Props {
   placeholder?: string;
@@ -15,7 +14,6 @@ interface Props {
   label: string;
   handleChange: (e: string | ChangeEvent<any>) => void;
   keyboardType: KeyboardTypeOptions;
-  //handleChange: (text: string | number, actionName: string) => void;
 }
 export function Input({
   keyboardType,
@@ -33,8 +31,6 @@ export function Input({
         value={value}
         style={styles.input}
         onChangeText={handleChange}
-
-        // onChangeText={val => handleChange(val, actionName)}
       />
     </View>
   );

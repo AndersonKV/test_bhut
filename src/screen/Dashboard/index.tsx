@@ -15,7 +15,7 @@ import {Indicator} from '../../components/Indicator';
 import {Formik} from 'formik';
 import {Input} from '../../components/Input';
 import {validate} from '../../utils';
-import {ICar} from '../../types/Car';
+import {DataCar} from '../../types/Car';
 
 type RootStack = NativeStackScreenProps<RootStackParams>;
 
@@ -24,12 +24,12 @@ type RootStackParams = {
 };
 
 export function ScreenDashboard({route, navigation}: RootStack) {
-  const [car, setCar] = useState<ICar>();
+  const [car, setCar] = useState<DataCar>();
   const [activeEditButton, setActiveEditButton] = useState(false);
 
   useEffect(() => {
     const params = route?.params as any;
-    const values = params.item as ICar;
+    const values = params.item as DataCar;
 
     if (values?._id) {
       setCar(values);
@@ -71,11 +71,12 @@ export function ScreenDashboard({route, navigation}: RootStack) {
 
   async function onSubmit(values: any) {
     try {
-      const formData = values as ICar;
+      const formData = values as DataCar;
 
       const res = await api.put('api/cars/' + formData._id, formData);
 
       if (res.data._id) {
+        setCar(formData);
         ToastAndroid.show('Dados atualizado', ToastAndroid.TOP);
       } else {
         ToastAndroid.show('Não foi possivel atualizar', ToastAndroid.TOP);

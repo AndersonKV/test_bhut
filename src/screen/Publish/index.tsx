@@ -11,21 +11,17 @@ import {
   Button,
 } from 'react-native';
 import {api} from '../../api/api';
-import {ValidateCarDTO} from '../../types/Car';
+import {CarDTO} from '../../types/Car';
 import {Formik} from 'formik';
 import {Input} from '../../components/Input';
 import {validate} from '../../utils';
 
-type RootStack = NativeStackScreenProps<RootStackParams>;
-
-type RootStackParams = {};
-
-export function ScreenPublish({route, navigation}: RootStack) {
+export function ScreenPublish() {
   const initials = {title: '', brand: '', price: '', age: ''};
   const initialValues = {...initials};
   const initialErrors = {...initials};
 
-  async function onSubmit(values: ValidateCarDTO) {
+  async function onSubmit(values: CarDTO) {
     try {
       const formData = values;
 
