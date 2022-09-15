@@ -52,7 +52,7 @@ export default function ScreenHome({navigation}: ScreenProps) {
           navigate={() => navigation.navigate('List')}
         />
 
-        <Indicator
+        {/* <Indicator
           title="Atualizar carro"
           background="#ec971f"
           color="white"
@@ -64,7 +64,7 @@ export default function ScreenHome({navigation}: ScreenProps) {
           background="#d9534f"
           color="white"
           navigate={() => navigation.navigate('List')}
-        />
+        /> */}
       </View>
     </View>
   );

@@ -7,8 +7,10 @@ import {
   TouchableOpacity,
   Pressable,
   FlatList,
+  ListRenderItemInfo,
 } from 'react-native';
 import {api} from '../../api/api';
+import {RenderItem} from '../../components/RenderItem';
 import {ICar} from '../../types/Car';
 
 type RootStack = NativeStackScreenProps<RootStackParams>;
@@ -42,23 +44,32 @@ export default function ScreenList({navigation}: RootStack) {
     navigation.navigate('Car', {item});
   };
 
+  const keyExtractor = (item: ICar) => item._id;
+
+  // fixed height of item component
+  const ITEM_HEIGHT = 40;
+
   return (
     <View
       style={{
         flex: 1,
-        backgroundColor: 'yellow',
+        backgroundColor: 'white',
       }}>
       <FlatList
         style={styles.flatList}
-        keyExtractor={item => item._id.toString()}
+        keyExtractor={keyExtractor}
         data={cars}
-        renderItem={({item}) => (
-          <TouchableOpacity
-            style={{marginVertical: 10}}
-            onPress={() => navigate(item)}>
-            <Text>{item.title}</Text>
-          </TouchableOpacity>
-        )}
+        initialNumToRender={10}
+        windowSize={10}
+        maxToRenderPerBatch={10}
+        updateCellsBatchingPeriod={30}
+        removeClippedSubviews={false}
+        getItemLayout={(_, index) => ({
+          length: ITEM_HEIGHT,
+          offset: ITEM_HEIGHT * index,
+          index,
+        })}
+        renderItem={RenderItem}
       />
     </View>
   );
@@ -92,7 +103,7 @@ export const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   flatList: {
-    marginVertical: 20,
+    margin: 20,
     height: 300,
 
     borderColor: '#d3d3d3',
